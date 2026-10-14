@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "周辺相場マップ 取り込みボタン(B案)",
+  "version": "1.0.0",
+  "description": "いま開いている物件ページの内容を、パソコン内の「周辺相場マップ(B案)」(B案フォルダのindex.html)に1クリックで取り込みます。ボタンを押したページだけを読み、外部には何も送信しません。",
+  "permissions": ["activeTab", "scripting", "tabs", "storage"],
+  "host_permissions": ["file:///*"],
+  "background": { "service_worker": "background.js" },
+  "action": { "default_title": "周辺相場マップ(B案)に取り込む" }
+}
