@@ -1,17 +1,17 @@
-// 周辺相場マップ 取り込みボタン(B案用。B案フォルダの index.html にだけ取り込む)
+// 周辺相場マップ 取り込みボタン(公開版用。https://hujihisahousing.github.io/market-app/ にだけ取り込む)
 // ツールバーのボタンを押すと、いま開いている物件ページの文章を読み、開いている「周辺相場マップ」(index.html)に追加する。
 // - 一覧ページで物件をドラッグして選んでから押すと、選んだ範囲の物件を1件ずつ、まとめて追加する。
 //   何も選んでいない(または、ほぼページ全体を選んでいる)ときは、そのページの1件を追加する。
 // - 読むのは、ボタンを押したそのページだけ(activeTab)。自動でほかのページを巡ったり、外部へ送信したりはしない。
 // - 追加は、アプリが用意している window.marketAppImport(文章, URL, モード, 物件URL一覧) を呼ぶだけ。
 
-var DEFAULT_APP_URL = "file:///C:/Claude/market-app/B%E6%A1%88/index.html"; // B案
-var APP_PATH = "market-app/B案/index.html"; // B案のページだけを探す(主案・古いアプリには入れない)
+var DEFAULT_APP_URL = "https://hujihisahousing.github.io/market-app/"; // 公開版のアプリ
+var APP_ORIGIN = "https://hujihisahousing.github.io/market-app/"; // この住所のページだけを、取り込み先として探す
 
-// B案用の目印: ボタンに、いつも青い「B」を出す(古い拡張機能のボタンと、見分けるため)
+// 目印: ボタンに、いつも青い「相」を出す
 function restBadge() {
   chrome.action.setBadgeBackgroundColor({ color: "#1565c0" });
-  chrome.action.setBadgeText({ text: "B" });
+  chrome.action.setBadgeText({ text: "相" });
 }
 restBadge();
 chrome.runtime.onInstalled.addListener(restBadge);
@@ -39,7 +39,7 @@ async function findAppTab() {
   var tabs = await chrome.tabs.query({});
   for (var i = 0; i < tabs.length; i++) {
     var u = tabs[i].url || "";
-    if (u.indexOf("file:///") === 0 && decodeURIComponent(u).indexOf(APP_PATH) >= 0) return tabs[i];
+    if (u.indexOf(APP_ORIGIN) === 0) return tabs[i];
   }
   return null;
 }
@@ -135,7 +135,7 @@ chrome.action.onClicked.addListener(async function (tab) {
         args: [page.text, tab.url, page.mode, page.links]
       });
     } catch (e) {
-      tellUser(tab.id, "「周辺相場マップ」のタブに書き込めません。\n拡張機能の管理画面で、この拡張機能の「詳細」を開き、「ファイルのURLへのアクセスを許可する」をオンにしてください。");
+      tellUser(tab.id, "「周辺相場マップ」のタブに書き込めません。\n「周辺相場マップ」のタブを開き直して(F5キー)、もう一度押してください。");
       return;
     }
     var result = out && out[0] && out[0].result;

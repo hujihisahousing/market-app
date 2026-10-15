@@ -22,3 +22,4 @@ https://hujihisahousing.github.io/market-app/
 
 `chrome-extension` フォルダは、Edge・Chromeの拡張機能です。
 閲覧中の物件ページの文字を読んで、このツールに取り込みます。
+入れ方は、[拡張機能の入れ方](拡張機能の入れ方.md) を見てください。
